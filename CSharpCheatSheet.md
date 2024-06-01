@@ -1,5 +1,5 @@
 
-# My Kewl Programing Notes
+# C# Cheat Sheet
 
 ## Types
 
