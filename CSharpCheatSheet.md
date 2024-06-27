@@ -1,6 +1,15 @@
 
 # C# Cheat Sheet
 
+## To add
+
+Get & Set Methode
+Try & Catch & throw 
+Case & break
+override
+String builder
+Stream reader / stream writer
+
 ## Types
 
 The following basic types in C# exist:
