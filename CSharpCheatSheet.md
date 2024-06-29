@@ -345,6 +345,58 @@ public class TimePeriod
 }
 ```
 
+You can have "implicit" properties, that is you kan skip trivial get and set 
+functions. For example:
+
+```csharp
+public class TimePeriod
+{
+    private double _seconds;
+
+    public double Seconds
+    {
+        get { return _seconds; }
+        set { _seconds = value; }
+    }
+}
+```
+
+Can be rewritten as:
+
+```csharp
+public class TimePeriod
+{
+    public double Seconds { get; set; }
+}
+```
+
+The effectively become public variables. 
+
+The are still better than actually making variables public, because:
+
+- you can change your mind and actually implement the get or set function 
+  differently
+- you can have read only (or write only) properties
+
+  ```csharp
+  public class TimePeriod
+  {
+      public double Seconds { get;}
+  }
+  ```
+
+- you can have publicly readable and private writable
+
+  ```csharp
+  public class TimePeriod
+  {
+      public double Seconds { get; private set;}
+  }
+  ```
+
+
+
+
 ### Constructor
 
 ```csharp
