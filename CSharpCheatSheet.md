@@ -256,6 +256,106 @@ if (numbers.Count > 0)
 }
 ```
 
+## Exceptions
+
+Exception handling is a way to handle errors or unexpected behavior in general.
+
+Take following code:
+
+```csharp
+public Widget GetWidget(string id)
+{
+    foreach (var w in widgets)
+    {
+        if (w.Id == id)
+        {
+            return w;
+        }
+    }
+    throw ArgumentOutOfRangeException(String.Format("No widget with Id {0} found.", id);
+}
+```
+
+This function will return a widget or throw an exception, you can rest assured 
+that the widget is valid. 
+
+To handle exceptions you need to use the try / catch syntax.
+
+For example:
+
+```csharp
+try
+{
+    var widget = GetWidget("ExitButton");
+    widget.Activate();
+}
+catch (Exception e)
+{
+   Console.WriteLine("{0}: {1}", e.GetType().Name, e.Message);
+}
+finally
+{
+    Activate();
+}
+```
+
+The try block will "try" to do something, if an exception is thrown it will 
+interrupt execution. Any code after the exception will not be executed. 
+
+The catch block, which is optional, will be run in the event if an exception is 
+raised. 
+
+The finally block, which is optional, will always called even when an exception 
+was thrown. You can for example have a try/finally construction that does not 
+handle the exception, but a certain pice of code needs to always run.
+
+### Exceptions for Exceptional Behavior
+
+You should not use exceptions for control flow; but only in those situations 
+where you really can't recover. For example the above code could be rewritten as:
+
+```csharp
+public Widget TryGetWidget(string id)
+{
+    foreach (var w in widgets)
+    {
+        if (w.Id == id)
+        {
+            return w;
+        }
+    }
+    return null;
+}
+```
+
+```csharp
+var widget = TryGetWidget("ExitButton");
+if (widget != null)
+{
+    widget.Activate();
+}
+```
+
+This code expects the value may not exist. 
+
+### Programming Mistakes
+
+This is a point of contention, but a more modern view on the subject is that
+you should not write exceptions to catch programming mistakes. For example 
+if you KNOW that the ExitButton must exist you can write:
+
+
+```csharp
+var widget = TryGetWidget("ExitButton");
+Debug.Assert(widget);
+widget.Activate();
+```
+
+The assert will only be executed in debug builds, then you will get a nice popup
+window that allows you to attach the debugger and see whats what.
+
+The release build will happily crash away. 
+
 ## Objects
 
 Object comme in two flavors `struct` and `class`. At a bastic level they are
