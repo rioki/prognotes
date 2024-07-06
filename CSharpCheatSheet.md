@@ -272,7 +272,7 @@ public Widget GetWidget(string id)
             return w;
         }
     }
-    throw ArgumentOutOfRangeException(String.Format("No widget with Id {} found.", id);
+    throw ArgumentOutOfRangeException(String.Format("No widget with Id {0} found.", id);
 }
 ```
 
@@ -330,7 +330,7 @@ public Widget TryGetWidget(string id)
 
 ```csharp
 var widget = TryGetWidget("ExitButton");
-if (widget)
+if (widget != null)
 {
     widget.Activate();
 }
