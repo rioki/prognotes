@@ -256,6 +256,42 @@ if (numbers.Count > 0)
 }
 ```
 
+### Loop Control
+
+While this is discouraged, manipulate loop execution with the `break` and 
+`continue` keywords.
+
+```csharp
+for (int i = 0; i < 10; i++) 
+{
+  if (i == 4) 
+  {
+    break;
+  }
+  Console.WriteLine(i);
+}
+```
+
+The above code just counts to 3 instead of 10. As the `break` keyword will end 
+the loop execution and continue after the loop. A good place where break may be 
+used is when you are looking for an item and found it.
+
+```csharp
+for (int i = 0; i < 10; i++) 
+{
+  if (i == 4) 
+  {
+    continue;
+  }
+  Console.WriteLine(i);
+}
+```
+
+The above code will skip the 4. The `continue` keyword instruct the code to skip
+this loop iteration. A common example is if you do something complicated to 
+objects, but only under certain conditions. You would then check the condition
+and `continue`.
+
 ## Objects
 
 Object comme in two flavors `struct` and `class`. At a bastic level they are
