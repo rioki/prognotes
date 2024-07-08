@@ -256,6 +256,7 @@ if (numbers.Count > 0)
 }
 ```
 
+
 ### Loop Control
 
 While this is discouraged, manipulate loop execution with the `break` and 
@@ -291,6 +292,106 @@ The above code will skip the 4. The `continue` keyword instruct the code to skip
 this loop iteration. A common example is if you do something complicated to 
 objects, but only under certain conditions. You would then check the condition
 and `continue`.
+
+## Exceptions
+
+Exception handling is a way to handle errors or unexpected behavior in general.
+
+Take following code:
+
+```csharp
+public Widget GetWidget(string id)
+{
+    foreach (var w in widgets)
+    {
+        if (w.Id == id)
+        {
+            return w;
+        }
+    }
+    throw ArgumentOutOfRangeException(String.Format("No widget with Id {0} found.", id);
+}
+```
+
+This function will return a widget or throw an exception, you can rest assured 
+that the widget is valid. 
+
+To handle exceptions you need to use the try / catch syntax.
+
+For example:
+
+```csharp
+try
+{
+    var widget = GetWidget("ExitButton");
+    widget.Activate();
+}
+catch (Exception e)
+{
+   Console.WriteLine("{0}: {1}", e.GetType().Name, e.Message);
+}
+finally
+{
+    Activate();
+}
+```
+
+The try block will "try" to do something, if an exception is thrown it will 
+interrupt execution. Any code after the exception will not be executed. 
+
+The catch block, which is optional, will be run in the event if an exception is 
+raised. 
+
+The finally block, which is optional, will always called even when an exception 
+was thrown. You can for example have a try/finally construction that does not 
+handle the exception, but a certain pice of code needs to always run.
+
+### Exceptions for Exceptional Behavior
+
+You should not use exceptions for control flow; but only in those situations 
+where you really can't recover. For example the above code could be rewritten as:
+
+```csharp
+public Widget TryGetWidget(string id)
+{
+    foreach (var w in widgets)
+    {
+        if (w.Id == id)
+        {
+            return w;
+        }
+    }
+    return null;
+}
+```
+
+```csharp
+var widget = TryGetWidget("ExitButton");
+if (widget != null)
+{
+    widget.Activate();
+}
+```
+
+This code expects the value may not exist. 
+
+### Programming Mistakes
+
+This is a point of contention, but a more modern view on the subject is that
+you should not write exceptions to catch programming mistakes. For example 
+if you KNOW that the ExitButton must exist you can write:
+
+
+```csharp
+var widget = TryGetWidget("ExitButton");
+Debug.Assert(widget);
+widget.Activate();
+```
+
+The assert will only be executed in debug builds, then you will get a nice popup
+window that allows you to attach the debugger and see whats what.
+
+The release build will happily crash away. 
 
 ## Objects
 
@@ -380,6 +481,58 @@ public class TimePeriod
     }
 }
 ```
+
+You can have "implicit" properties, that is you kan skip trivial get and set 
+functions. For example:
+
+```csharp
+public class TimePeriod
+{
+    private double _seconds;
+
+    public double Seconds
+    {
+        get { return _seconds; }
+        set { _seconds = value; }
+    }
+}
+```
+
+Can be rewritten as:
+
+```csharp
+public class TimePeriod
+{
+    public double Seconds { get; set; }
+}
+```
+
+The effectively become public variables. 
+
+The are still better than actually making variables public, because:
+
+- you can change your mind and actually implement the get or set function 
+  differently
+- you can have read only (or write only) properties
+
+  ```csharp
+  public class TimePeriod
+  {
+      public double Seconds { get;}
+  }
+  ```
+
+- you can have publicly readable and private writable
+
+  ```csharp
+  public class TimePeriod
+  {
+      public double Seconds { get; private set;}
+  }
+  ```
+
+
+
 
 ### Constructor
 
